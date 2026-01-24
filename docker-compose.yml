@@ -1,0 +1,9 @@
+services:
+  # React Frontend
+  frontend:
+    build: ./frontend
+    container_name: resume_frontend
+    restart: always
+    ports:
+      - "80:80"
+
