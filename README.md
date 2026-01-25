@@ -119,21 +119,10 @@ docker-compose up --build
 
 # Access the application
 # Frontend: http://localhost
-# Backend API: http://localhost:8000
 # API Docs: http://localhost:8000/docs
 ```
 
 ### Option 2: Local Development Setup
-
-#### Backend Setup
-```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-python -m spacy download en_core_web_sm
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
 
 #### Frontend Setup
 ```bash
@@ -144,7 +133,6 @@ npm run dev
 
 #### Access Points
 - **Frontend (Dev)**: http://localhost:5173
-- **Backend API**: http://localhost:8000
 - **API Docs**: http://localhost:8000/docs
 
 ## 📦 Dependencies
