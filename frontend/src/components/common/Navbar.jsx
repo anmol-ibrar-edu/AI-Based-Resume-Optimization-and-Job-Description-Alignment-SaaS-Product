@@ -1,101 +1,148 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useState } from 'react';
-import { Menu, X, User, LogOut, Upload, BarChart3 } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
+import { useState, useEffect } from 'react';
+import { Menu, X, User, LogOut, Sun, Moon, ShieldCheck, ArrowUpRight, Zap } from 'lucide-react';
+import LogoImg from '../../assets/Logo-transparent.png';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
 
   const handleLogout = () => {
     logout();
     navigate('/', { replace: true });
   };
 
+  const navLink = (to, label) => {
+    const active = location.pathname === to;
+    return (
+      <Link
+        to={to}
+        className={`px-5 py-2 text-[10px] font-black uppercase tracking-widest transition-all rounded-xl ${
+          active
+            ? 'text-brand-600 bg-brand-50/50 dark:bg-brand-900/10'
+            : 'text-[#6B6258] dark:text-[#A09890] hover:text-brand-600 dark:hover:text-brand-400'
+        }`}
+      >
+        {label}
+      </Link>
+    );
+  };
+
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      scrolled
+        ? 'bg-white/80 dark:bg-[#0D0B09]/80 backdrop-blur-xl border-b border-[#EAE4DA] dark:border-slate-900 py-3'
+        : 'bg-transparent border-b border-transparent py-6'
+    }`}>
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="flex justify-between items-center">
+
           {/* Logo */}
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2 group">
-              <div className="bg-primary-600 rounded-lg p-2 group-hover:scale-105 transition-transform duration-200">
-                <BarChart3 className="h-5 w-5 text-white" />
-              </div>
-              <span className="text-lg font-bold text-gray-900">ResumeAI</span>
+          <div className="flex-shrink-0">
+            <Link to="/" className="flex items-center gap-3 group">
+              <img src={LogoImg} alt="ResumeAI" className="h-7 w-auto grayscale group-hover:grayscale-0 transition-all duration-500" />
+              <span className="text-2xl font-[900] text-slate-900 dark:text-white tracking-tighter font-heading">
+                Resume<span className="text-brand-600">AI</span>
+              </span>
             </Link>
           </div>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-1">
-            {/* Nav Links with underline animation */}
-            <Link
-              to="/"
-              className="relative px-4 py-2 text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200 group"
-            >
-              Home
-              <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left"></span>
-            </Link>
+          {/* Desktop Links */}
+          <div className="hidden lg:flex items-center gap-2">
+            {navLink('/', 'Home')}
 
             {user ? (
               <>
-                <Link
-                  to="/upload"
-                  className="relative px-4 py-2 text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200 group"
-                >
-                  <span className="flex items-center gap-1">
-                    <Upload className="h-4 w-4" />
-                    Upload
-                  </span>
-                  <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left"></span>
-                </Link>
-                <Link
-                  to="/dashboard"
-                  className="relative px-4 py-2 text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200 group"
-                >
-                  <span className="flex items-center gap-1">
-                    <BarChart3 className="h-4 w-4" />
-                    Dashboard
-                  </span>
-                  <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left"></span>
-                </Link>
+                {navLink('/upload', 'Analyze Resume')}
+                {navLink('/dashboard', 'Dashboard')}
+                {navLink('/career', 'Career Path')}
+                {user.role === 'admin' && (
+                  <Link
+                    to="/admin"
+                    className="flex items-center gap-1.5 px-5 py-2 text-[10px] font-black uppercase tracking-widest text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-all"
+                  >
+                    <ShieldCheck size={14} /> Admin
+                  </Link>
+                )}
 
-                {/* User Menu */}
-                <div className="relative group ml-4">
-                  <button className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 px-3 py-2 transition-colors duration-200">
-                    <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                      <User className="h-4 w-4 text-primary-600" />
+                <div className="w-px h-6 bg-[#EAE4DA] dark:bg-slate-800 mx-4" />
+
+                <label className="theme-switch mx-4">
+                  <input 
+                    type="checkbox" 
+                    checked={theme === 'dark'}
+                    onChange={toggleTheme}
+                  />
+                  <span className="theme-slider" />
+                </label>
+
+                {/* User dropdown */}
+                <div className="relative group ml-3">
+                  <button className="flex items-center gap-3 pl-2 pr-4 py-1.5 bg-white dark:bg-slate-900 border border-[#EAE4DA] dark:border-slate-800 rounded-full hover:border-brand-600 transition-all shadow-sm">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-black ${
+                      user.role === 'admin'
+                        ? 'bg-rose-600 text-white'
+                        : 'bg-brand-600 text-white shadow-brand'
+                    }`}>
+                      {user.role === 'admin' ? <ShieldCheck size={14} /> : user.full_name?.charAt(0) || <User size={14} />}
                     </div>
-                    <svg className="h-4 w-4 transition-transform group-hover:rotate-180 duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <span className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest">
+                      {user.full_name?.split(' ')[0]}
+                    </span>
                   </button>
-                  <div className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-gray-100 py-1">
-                    <div className="px-4 py-2 text-sm text-gray-500 border-b border-gray-100">
-                      {user.full_name || user.email}
+
+                  <div className="absolute right-0 mt-4 w-60 bg-white dark:bg-[#161310] rounded-3xl shadow-card-hover border border-[#EAE4DA] dark:border-slate-800 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 py-3 z-50">
+                    <div className="px-5 py-3 border-b border-[#F1F1EF] dark:border-slate-800/50 mb-2">
+                       <p className="text-[10px] font-black text-[#A09890] uppercase tracking-widest mb-1">Authenticated As</p>
+                       <p className="text-xs font-black text-slate-900 dark:text-white truncate">{user.email}</p>
                     </div>
+                    <Link
+                      to="/settings"
+                      className="flex items-center gap-3 px-5 py-3 text-xs font-black uppercase tracking-widest text-slate-700 dark:text-[#A09890] hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors w-full text-left"
+                    >
+                      <Zap size={14} className="text-brand-600" /> Settings & API Keys
+                    </Link>
                     <button
                       onClick={handleLogout}
-                      className="flex items-center space-x-2 w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50 transition-colors duration-200"
+                      className="flex items-center gap-3 w-full px-5 py-3 text-xs font-black uppercase tracking-widest text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors"
                     >
-                      <LogOut className="h-4 w-4" />
-                      <span>Logout</span>
+                      <LogOut size={14} /> Sign out System
                     </button>
                   </div>
                 </div>
               </>
             ) : (
-              <div className="flex items-center space-x-3 ml-4">
-                <Link
-                  to="/login"
-                  className="text-gray-600 hover:text-gray-900 px-4 py-2 transition-colors duration-200 font-medium"
-                >
-                  Login
+              <div className="flex items-center gap-4">
+                <label className="theme-switch mx-2">
+                  <input 
+                    type="checkbox" 
+                    checked={theme === 'dark'}
+                    onChange={toggleTheme}
+                  />
+                  <span className="theme-slider" />
+                </label>
+                <Link to="/login" className="px-5 py-2 text-[10px] font-black uppercase tracking-widest text-[#6B6258] hover:text-brand-600 transition-colors">
+                  Log in
                 </Link>
                 <Link to="/signup">
-                  <button className="bg-primary-600 text-white px-5 py-2 rounded-lg hover:bg-primary-700 transition-all duration-200 shadow-md hover:shadow-lg font-medium">
-                    Get Started
+                  <button className="btn-premium !h-[3em] !pl-6 !pr-[3.5em] !text-[10px]">
+                    Initialize <div className="btn-icon"><ArrowUpRight /></div>
                   </button>
                 </Link>
               </div>
@@ -103,83 +150,55 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center gap-4">
+            <label className="theme-switch">
+              <input 
+                type="checkbox" 
+                checked={theme === 'dark'}
+                onChange={toggleTheme}
+              />
+              <span className="theme-slider" />
+            </label>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-gray-600 hover:text-gray-900 transition-colors duration-200 p-2"
+              className="p-2.5 text-slate-900 dark:text-white"
+              aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden pb-4 border-t border-gray-100">
-            <div className="pt-4 space-y-1">
-              <Link
-                to="/"
-                className="block px-4 py-2 text-gray-700 hover:bg-gray-50 font-medium rounded-lg"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Home
-              </Link>
-
-              {user ? (
-                <>
-                  <Link
-                    to="/upload"
-                    className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50 font-medium rounded-lg"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <Upload className="h-4 w-4" /> Upload
-                  </Link>
-                  <Link
-                    to="/dashboard"
-                    className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50 font-medium rounded-lg"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <BarChart3 className="h-4 w-4" /> Dashboard
-                  </Link>
-                  <div className="border-t border-gray-100 mt-2 pt-2">
-                    <div className="px-4 py-2 text-sm text-gray-500">
-                      {user.full_name || user.email}
-                    </div>
-                    <button
-                      onClick={() => {
-                        handleLogout();
-                        setMobileMenuOpen(false);
-                      }}
-                      className="flex items-center gap-2 w-full px-4 py-2 text-gray-700 hover:bg-gray-50 font-medium rounded-lg"
-                    >
-                      <LogOut className="h-4 w-4" /> Logout
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <div className="space-y-2 pt-2">
-                  <Link
-                    to="/login"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-50 font-medium rounded-lg"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    to="/signup"
-                    className="block px-4 py-2"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <button className="w-full bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors duration-200 font-medium">
-                      Get Started
-                    </button>
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden bg-white dark:bg-[#0D0B09] border-t border-[#EAE4DA] dark:border-slate-800 px-8 py-10 flex flex-col gap-6 shadow-2xl overflow-y-auto max-h-[calc(100vh-80px)]">
+          <Link to="/" className="text-2xl font-[900] text-slate-900 dark:text-white font-heading">Home</Link>
+          {user ? (
+            <>
+              <Link to="/upload" className="text-2xl font-[900] text-slate-900 dark:text-white font-heading">Analyze Resume</Link>
+              <Link to="/dashboard" className="text-2xl font-[900] text-slate-900 dark:text-white font-heading">Dashboard</Link>
+              <Link to="/career" className="text-2xl font-[900] text-slate-900 dark:text-white font-heading">Career Path</Link>
+              <Link to="/settings" className="text-2xl font-[900] text-slate-900 dark:text-white font-heading">Settings</Link>
+              {user.role === 'admin' && (
+                <Link to="/admin" className="text-2xl font-[900] text-rose-600 font-heading flex items-center gap-3">
+                  <ShieldCheck size={22} /> Admin
+                </Link>
+              )}
+              <button onClick={handleLogout} className="text-2xl font-[900] text-rose-600 font-heading text-left flex items-center gap-4">
+                <LogOut size={24} /> Sign Out
+              </button>
+            </>
+          ) : (
+            <div className="flex flex-col gap-6">
+              <Link to="/login" className="text-2xl font-[900] text-slate-900 dark:text-white font-heading">Log In</Link>
+              <Link to="/signup" className="w-full bg-brand-600 text-white py-6 rounded-3xl text-center text-xl font-black uppercase tracking-widest shadow-brand">
+                Get Started
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
     </nav>
   );
 };

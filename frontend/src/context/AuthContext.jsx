@@ -1,5 +1,10 @@
+/*
+ * File: context/AuthContext.jsx
+ * Purpose: Manages the authentication state of the user, providing login, registration, and logout functionality globally via React Context.
+ * Missing Impact: The application would be unable to track user sessions, and protected features would become inaccessible or insecure.
+ */
 import { createContext, useContext, useState, useEffect } from 'react';
-import { authAPI, userAPI } from '../services';
+import { authAPI, userAPI } from '../services/api';
 
 const AuthContext = createContext(null);
 

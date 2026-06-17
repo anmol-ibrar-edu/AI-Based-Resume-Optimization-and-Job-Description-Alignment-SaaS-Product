@@ -1,6 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Brand CSS Variables - Preserving User Palette but Refined */
+:root {
+  --brand-50:  #fff8ed;
+  --brand-100: #ffefd4;
+  --brand-200: #ffdaa8;
+  --brand-300: #ffbf71;
+  --brand-400: #fd9a38;
+  --brand-500: #fb7c0e;
+  --brand-600: #e8870a;
+  --brand-700: #cf7a09;
+  --brand-800: #a85e0c;
+  --brand-900: #884e0f;
+
+  --bg-primary:   #FAFAF7;
+  --bg-surface:   #FFFFFF;
+  --text-primary: #0F0E0C;
+  --text-muted:   #6B6258;
+  --border:       #EAE4DA;
+  --muted-fill:   #F5F0E8;
+}
+
+.dark {
+  --bg-primary:   #0D0B09;
+  --bg-surface:   #161310;
+  --text-primary: #F5F0E8;
+  --text-muted:   #A09890;
+  --border:       #2A231A;
+  --muted-fill:   #1E1910;
+}
 
 html {
   scroll-behavior: smooth;
@@ -9,19 +41,14 @@ html {
 /* Hide scrollbar but keep scroll functionality */
 * {
   scrollbar-width: none;
-  /* Firefox */
   -ms-overflow-style: none;
-  /* IE and Edge */
 }
 
 *::-webkit-scrollbar {
   display: none;
-  /* Chrome, Safari, Opera */
 }
 
-/* Responsive base styles */
-html,
-body {
+html, body {
   overflow-x: hidden;
   width: 100%;
   min-height: 100vh;
@@ -29,107 +56,234 @@ body {
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    @apply bg-[#FAFAF7] dark:bg-[#0D0B09] text-[#0F0E0C] dark:text-[#F5F0E8];
+    font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Responsive text sizing */
-  h1 {
-    @apply text-2xl sm:text-3xl lg:text-4xl;
-  }
-
-  h2 {
-    @apply text-xl sm:text-2xl lg:text-3xl;
-  }
-
-  h3 {
-    @apply text-lg sm:text-xl lg:text-2xl;
+  h1, h2, h3, h4, .font-heading {
+    font-family: 'Outfit', sans-serif;
   }
 }
 
 @layer components {
+  .shadow-card {
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 10px -2px rgba(0, 0, 0, 0.03);
+  }
+  
+  .shadow-card-hover {
+    box-shadow: 0 20px 40px -4px rgba(0, 0, 0, 0.08), 0 8px 16px -4px rgba(0, 0, 0, 0.04);
+  }
+
+  .btn-premium {
+    @apply relative flex items-center h-[3.2em] pl-6 pr-[3.8em] py-2 bg-brand-600 text-white font-bold rounded-2xl overflow-hidden cursor-pointer transition-all active:scale-95 shadow-lg shadow-brand-600/20 border-none tracking-wide;
+  }
+
+  .btn-premium .btn-icon {
+    @apply absolute right-[0.4em] flex items-center justify-center w-[2.4em] h-[2.4em] bg-white rounded-xl shadow-md transition-all duration-300 text-brand-600;
+  }
+
+  .btn-premium:hover .btn-icon {
+    @apply w-[calc(100%-0.8em)];
+  }
+
+  .btn-premium .btn-icon svg {
+    @apply w-[1.2em] h-[1.2em] transition-transform duration-300;
+  }
+
+  .btn-premium:hover .btn-icon svg {
+    @apply translate-x-1;
+  }
+
+  /* Black version */
   .btn-primary {
-    @apply bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply relative flex items-center h-[3.4em] pl-8 pr-[4.2em] py-3 bg-[#0F0E0C] text-white font-bold rounded-2xl overflow-hidden cursor-pointer transition-all active:scale-95 shadow-xl shadow-black/10 border-none tracking-widest uppercase text-xs;
   }
 
-  .btn-secondary {
-    @apply bg-white text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors duration-200 border-2 border-gray-300 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed;
+  .btn-primary .btn-icon {
+    @apply absolute right-[0.5em] flex items-center justify-center w-[2.6em] h-[2.6em] bg-white rounded-xl transition-all duration-500 text-black shadow-lg;
   }
 
-  .btn-danger {
-    @apply bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed;
+  .btn-primary:hover .btn-icon {
+    @apply w-[calc(100%-1em)];
   }
 
-  .glass-card {
-    @apply bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50;
+  .btn-primary .btn-icon svg {
+    @apply w-[1.4em] h-[1.4em] transition-transform duration-500;
   }
 
-  .input-field {
-    @apply w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all duration-200 bg-white text-gray-900;
+  .btn-primary:hover .btn-icon svg {
+    @apply translate-x-1;
   }
 
-  .input-field::placeholder {
-    @apply text-gray-400;
+  .btn-outline {
+    @apply relative flex items-center h-[3.4em] pl-8 pr-[4.2em] py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 font-bold rounded-2xl overflow-hidden cursor-pointer transition-all active:scale-95 shadow-sm tracking-widest uppercase text-xs;
   }
 
-  /* Icon hover effects */
-  .icon-hover {
-    @apply transition-all duration-300 ease-in-out;
+  .btn-outline .btn-icon {
+    @apply absolute right-[0.5em] flex items-center justify-center w-[2.6em] h-[2.6em] bg-slate-900 dark:bg-white rounded-xl transition-all duration-500 text-white dark:text-black;
   }
 
-  .icon-hover:hover {
-    @apply scale-125;
+  .btn-outline:hover .btn-icon {
+    @apply w-[calc(100%-1em)];
   }
 
-  .icon-container {
-    @apply transition-all duration-300 ease-in-out cursor-pointer;
+  .btn-outline .btn-icon svg {
+    @apply w-[1.4em] h-[1.4em] transition-transform duration-500;
   }
 
-  .icon-container:hover {
-    @apply scale-110 shadow-lg;
+  .btn-outline:hover .btn-icon svg {
+    @apply translate-x-1;
   }
 
-  .icon-container:hover svg {
-    @apply scale-110;
+  .tag {
+    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFF8ED] border border-[#FFDAA8] text-[#E8870A] text-xs font-black uppercase tracking-widest;
   }
 }
 
-/* Print Styles - Clean PDF Export */
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 50s linear infinite;
+}
+
+/* Print Styles */
 @media print {
-  @page {
-    size: A4;
-    margin: 1.5cm;
+  @page { size: A4; margin: 1.5cm; }
+  body { background: white !important; color: #0F0E0C !important; }
+  nav, footer, .no-print { display: none !important; }
+}
+
+/* Custom Theme Switch */
+.theme-switch {
+  font-size: 14px;
+  position: relative;
+  display: inline-block;
+  width: 3.5em;
+  height: 2em;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-slider {
+  --background: #28096b;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--background);
+  transition: .5s;
+  border-radius: 30px;
+}
+
+.theme-slider:before {
+  position: absolute;
+  content: "";
+  height: 1.4em;
+  width: 1.4em;
+  border-radius: 50%;
+  left: 10%;
+  bottom: 15%;
+  box-shadow: inset 8px -4px 0px 0px #fff000;
+  background: var(--background);
+  transition: .5s;
+}
+
+.theme-switch input:checked + .theme-slider {
+  background-color: #522ba7;
+}
+
+.theme-switch input:checked + .theme-slider:before {
+  transform: translateX(100%);
+  box-shadow: inset 15px -4px 0px 15px #fff000;
+}
+
+/* ── Glass Card Stack Animation ── */
+.glass-stack {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 0;
+  min-height: 520px;
+  width: 100%;
+}
+
+.glass-card {
+  position: absolute;
+  width: 320px;
+  height: 460px;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+  border-radius: 32px;
+  transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  transform: rotate(calc(var(--r) * 1deg)) translate(var(--x, 0), var(--y, 0));
+  z-index: var(--z);
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  cursor: pointer;
+}
+
+.dark .glass-card {
+  background: #161310;
+  border-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.glass-stack:hover .glass-card {
+  transform: rotate(0deg) translate(var(--spread-x), 0) scale(1.05);
+  z-index: 50;
+  box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.2);
+}
+
+.dark .glass-stack:hover .glass-card {
+  box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.8);
+}
+
+/* Mobile Responsiveness for Glass Stack */
+@media (max-width: 1024px) {
+  .glass-stack {
+    flex-direction: column;
+    padding: 20px 0;
+    min-height: auto;
+    gap: 24px;
   }
 
-  body {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    background: white !important;
+  .glass-card {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    min-height: 400px;
+    transform: none !important;
+    rotate: 0deg !important;
+    z-index: 1 !important;
   }
 
-  /* Hide these elements in print */
-  nav,
-  .print\\:hidden,
-  [class*="print:hidden"] {
-    display: none !important;
-  }
-
-  /* Show these elements in print */
-  .hidden.print\\:block,
-  [class*="hidden"][class*="print:block"] {
-    display: block !important;
-  }
-
-  /* Report styles */
-  #report-content {
-    background: white !important;
-    padding: 0 !important;
-  }
-
-  /* Prevent page breaks inside cards */
-  .print\\:break-inside-avoid {
-    page-break-inside: avoid;
+  .glass-stack:hover .glass-card {
+    transform: none !important;
+    scale: 1.02;
   }
 }

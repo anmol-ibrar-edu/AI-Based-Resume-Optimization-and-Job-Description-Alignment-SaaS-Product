@@ -4,57 +4,80 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
+        brand: {
+          50:  '#fff8ed',
+          100: '#ffefd4',
+          200: '#ffdaa8',
+          300: '#ffbf71',
+          400: '#fd9a38',
+          500: '#fb7c0e',
+          600: '#e8870a',
+          700: '#cf7a09',
+          800: '#a85e0c',
+          900: '#884e0f',
         },
-        secondary: {
-          50: '#fdf4ff',
-          100: '#fae8ff',
-          200: '#f5d0fe',
-          300: '#f0abfc',
-          400: '#e879f9',
-          500: '#d946ef',
-          600: '#c026d3',
-          700: '#a21caf',
-          800: '#86198f',
-          900: '#701a75',
-        },
-        accent: {
-          50: '#fefce8',
-          100: '#fef9c3',
-          200: '#fef08a',
-          300: '#fde047',
-          400: '#facc15',
-          500: '#eab308',
-          600: '#ca8a04',
-          700: '#a16207',
-          800: '#854d0e',
-          900: '#713f12',
-        }
+      },
+      fontFamily: {
+        sans: [
+          'Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont',
+          'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'
+        ],
       },
       animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out forwards',
+        'fade-in':     'fadeIn 0.5s ease-out forwards',
+        'slide-up':    'slideUp 0.5s ease-out forwards',
+        'slide-left':  'slideLeft 0.4s ease-out forwards',
+        'marquee':     'marquee 28s linear infinite',
+        'float':       'float 4s ease-in-out infinite',
+        'spin-slow':   'spin 3s linear infinite',
+        'pulse-soft':  'pulseSoft 2.5s ease-in-out infinite',
+        'progress':    'progress 1.2s ease-in-out forwards',
       },
       keyframes: {
         fadeIn: {
-          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '0%':   { opacity: '0', transform: 'translateY(12px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        slideUp: {
+          '0%':   { opacity: '0', transform: 'translateY(24px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideLeft: {
+          '0%':   { opacity: '0', transform: 'translateX(16px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        marquee: {
+          '0%':   { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%':      { transform: 'translateY(-10px)' },
+        },
+        pulseSoft: {
+          '0%, 100%': { opacity: '1' },
+          '50%':      { opacity: '0.6' },
+        },
+        progress: {
+          '0%':   { width: '0%' },
+          '100%': { width: '100%' },
+        },
+      },
+      backgroundImage: {
+        'warm-gradient': 'linear-gradient(135deg, #fff8ed 0%, #fafaf7 100%)',
+        'brand-gradient': 'linear-gradient(135deg, #e8870a 0%, #fb7c0e 100%)',
+      },
+      boxShadow: {
+        'brand': '0 4px 24px rgba(232,135,10,0.25)',
+        'brand-lg': '0 8px 40px rgba(232,135,10,0.30)',
+        'card': '0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04)',
+        'card-hover': '0 4px 24px rgba(0,0,0,0.10)',
       },
     },
   },
   plugins: [],
 }
-
